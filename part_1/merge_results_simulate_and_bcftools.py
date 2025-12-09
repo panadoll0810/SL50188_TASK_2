@@ -102,8 +102,8 @@ def merge_and_compare(vcf_file, csv_file, output_file):
     return result_df
 
 if __name__ == "__main__":
-    vcf_file = "/Users/milkcaramelcheng/Desktop/task2/E_coli/Ecoli_variants.vcf"
-    csv_file = "/Users/milkcaramelcheng/Desktop/task2/E_coli/simulated_mutate_genome.csv"
-    output_file = "/Users/milkcaramelcheng/Desktop/task2/E_coli/merged_result.csv"
+    vcf_file = "variants.vcf"
+    csv_file = "simulated_mutated_genome.csv"
+    output_file = "merged_result.csv"
 
     result = merge_and_compare(vcf_file, csv_file, output_file)
