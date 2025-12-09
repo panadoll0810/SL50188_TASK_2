@@ -16,11 +16,11 @@
     "## discussion: What is the precision and recall of the SNP caller?\n",
     "There are 320 mutations in the simulated genome and bcftools can detect 319 of them. In the `merged_result.csv`, two types of mismatch can be observed.\n",
     "\n",
-    "![Simulated SNP cannot be detected by bcftools](SNP_CSV_only.png)\n",
+    "![Simulated SNP cannot be detected by bcftools](image/SNP_CSV_only.png)\n",
     "**Figure 1.** Example of simulated SNP cannot be detected by bcftools, but recorded in the csv file.\n",
     "\n",
     "\n",
-    "![Indel can be detected by bcftools, but record in a different way with cvs file](Indel_VCF_and_CSV.png)\n",
+    "![Indel can be detected by bcftools, but record in a different way with cvs file](image/Indel_VCF_and_CSV.png)\n",
     "**Figure 2.** Example of indel can be detected by bcftools, but recorded in a different way with cvs file.\n",
     "\n",
     "Overall, in the simulated mutated genome, there is only one SNP that cannot be detected by bcftools, while all other mismatches are due to differences in recording methods. Based on the example in Figure 2, the simulated mutation is located at position 861277, with the recorded reference base as \"G\" at position 861276. The result for bcftools also starts from position 861276, but the recorded reference is \"GT\". This discrepancy can be explained by the ambiguity caused by repeated sequences in this position and the underlying algorithm of bcftools. This mutation can be recorded in different ways by the variant caller; bcftools follows the parsimony principle and records the mutation in a different way by simply including anchoring bases at a certain position. Therefore, the precision and recall of the bcftools is very high and almost matches all the simulated mutations.\n"
