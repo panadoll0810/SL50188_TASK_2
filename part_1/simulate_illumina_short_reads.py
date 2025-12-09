@@ -2,7 +2,9 @@ import random
 
 def genome_to_paired_reads(genome_file, output_prefix, read_length=100, num_reads=None,
                            coverage=30, quality_score="I", insert_size=300):
+    
     """prepare paired-end reads based on simulated mutated genome"""
+                             
     genome_seq = read_genome(genome_file)
 
     if not genome_seq:
@@ -63,8 +65,10 @@ def genome_to_paired_reads(genome_file, output_prefix, read_length=100, num_read
 
 
 def read_genome(genome_file):
+  
     """read genome file
         can be used on both txt and fasta files"""
+  
     sequence = []
 
     try:
@@ -107,8 +111,8 @@ def write_fastq(output_file, reads):
 
 if __name__ == "__main__":
     genome_to_paired_reads(
-        "/Users/milkcaramelcheng/Desktop/task2/E_coli/simulated_mutate_genome.txt",
-        "/Users/milkcaramelcheng/Desktop/task2/E_coli/simulated_read",
+        "simulated_mutated_genome.txt",
+        "simulated_read",
         read_length=100,
         coverage=30,
         insert_size=300
