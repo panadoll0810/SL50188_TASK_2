@@ -6,10 +6,12 @@ class SafeStringEditor:
     def __init__(self, original_string):
         self.string = original_string
         self.original_string = original_string
+        
         # insert markers to wrap insertion
         self.marker_prefix = "<<<IN_"
         self.marker_suffix = "_IN>>>"
         self.insert_counter = 0
+        
         # protect SNPs from deletion
         self.protected_chars = {"@", "#", ".", "%"}
         self.snp_map = {}
@@ -18,6 +20,7 @@ class SafeStringEditor:
         self.position_mapping = list(range(len(original_string)))
 
     def pre_snps_sequence(self, count):
+        
         """randomly label the positions of SNP by replace them with special characters
             protect them from deletion and avoid any changes of the insertion"""
 
@@ -49,7 +52,9 @@ class SafeStringEditor:
         return self
 
     def get_marker_positions(self):
+        
         """get positions of all insertion markers"""
+        
         pattern = re.escape(self.marker_prefix) + r"\d+" + re.escape(self.marker_suffix) + r".*?" + re.escape(
             self.marker_prefix) + r"\d+_END" + re.escape(self.marker_suffix)
         insertions = list(re.finditer(pattern, self.string))
@@ -61,8 +66,10 @@ class SafeStringEditor:
         return marker_positions
 
     def string_pos_to_mapping_index(self, string_pos):
+       
         """convert current string position to index in position mapping table
             skip marker positions"""
+        
         marker_positions = self.get_marker_positions()
         mapping_index = 0
         for i in range(string_pos):
@@ -71,8 +78,10 @@ class SafeStringEditor:
         return mapping_index
 
     def restore_snps(self):
+        
         """Restore labelled SNPs
             replace the special characters with random selected bases"""
+        
         replace_back_char = {
             "@": ["T", "G", "C"],
             "#": ["A", "G", "C"],
@@ -109,7 +118,9 @@ class SafeStringEditor:
         return self
 
     def get_safe_insertion_ranges(self):
+        
         """get list of positions where insertions are safe"""
+        
         pattern = re.escape(self.marker_prefix) + r"\d+" + re.escape(self.marker_suffix) + r".*?" + re.escape(
             self.marker_prefix) + r"\d+_END" + re.escape(self.marker_suffix)
         insertions = list(re.finditer(pattern, self.string))
@@ -125,14 +136,18 @@ class SafeStringEditor:
         return safe_positions
 
     def get_actual_position(self, string_pos):
+        
         """get the actual position in original sequence for current string position"""
+        
         mapping_index = self.string_pos_to_mapping_index(string_pos)
         if mapping_index < len(self.position_mapping):
             return self.position_mapping[mapping_index]
         return mapping_index
 
     def insert_random(self, sequence):
+       
         """insert a sequence at a random position"""
+        
         safe_positions = self.get_safe_insertion_ranges()
 
         pos = random.choice(safe_positions)
@@ -151,7 +166,9 @@ class SafeStringEditor:
         return actual_pos
 
     def get_safe_deletion_ranges(self):
+        
         """get list of ranges where deletions are safe"""
+        
         marker_positions = self.get_marker_positions()
         unsafe_positions = set(marker_positions)
 
@@ -177,7 +194,9 @@ class SafeStringEditor:
         return safe_ranges
 
     def delete_random(self, length):
+        
         """delete a random sequence"""
+        
         safe_ranges = self.get_safe_deletion_ranges()
 
         total_safe_length = sum(end - start for start, end in safe_ranges)
@@ -222,7 +241,9 @@ class SafeStringEditor:
         return None
 
     def perform_indels(self, num_indels):
+        
         """perform specified number of insertion and deletion"""
+        
         operations = []
         for i in range(num_indels):
             if random.choice(["insert", "delete"]) == "insert":
@@ -242,8 +263,10 @@ class SafeStringEditor:
         return
 
     def get_final_string(self):
+        
         """get final string
             remove all markers"""
+        
         pattern = re.escape(self.marker_prefix) + r"\d+" + re.escape(self.marker_suffix)
         result = re.sub(pattern, "", self.string)
         pattern_end = re.escape(self.marker_prefix) + r"\d+_END" + re.escape(self.marker_suffix)
@@ -251,9 +274,11 @@ class SafeStringEditor:
         return result
 
     def generate_report(self):
+        
         """generate a report of the mutations
             record positions of mutations
             record types of mutations"""
+        
         report = []
         report.append(f"{'Operation':<12} {'POS':<10} {'REF':<50} {'ALT':<50}")
 
@@ -304,7 +329,7 @@ class SafeStringEditor:
             alt_display = op["alt"] if len(op["alt"]) <= 50 else op["alt"][:47] + "..."
             report.append(f"{op['type']:<12} {op['position']:<10} {ref_display:<50} {alt_display:<50}")
 
-        with open("/Users/milkcaramelcheng/Desktop/task2/E_coli/simulated_mutate_genome.txt", "w") as f:
+        with open("simulated_mutated_genome.txt", "w") as f:
             f.write(self.get_final_string())
 
         return "\n".join(report)
@@ -323,7 +348,7 @@ def read_fasta_sequence(fasta_file):
         return None
 
 if __name__ == "__main__":
-    original = read_fasta_sequence("/Users/milkcaramelcheng/Desktop/task2/E_coli/EcoliK12-MG1655.fasta")
+    original = read_fasta_sequence("reference_genome.fasta")
     editor = SafeStringEditor(original)
     editor.pre_snps_sequence(300)
     editor.perform_indels(20)
@@ -333,7 +358,7 @@ if __name__ == "__main__":
     print(report)
 
     """store the mutations in a csv file"""
-    with open("/Users/milkcaramelcheng/Desktop/task2/E_coli/simulated_mutate_genome.csv", "w", newline="") as f:
+    with open("simulated_mutated_genome.csv", "w", newline="") as f:
         lines = [line.split() for line in report.split("\n") if line]
         header = lines[0] if lines else []
         data = lines[1:] if len(lines) > 1 else []
@@ -341,3 +366,4 @@ if __name__ == "__main__":
         writer = csv.writer(f)
         writer.writerow(header)
         writer.writerows(data)
+
