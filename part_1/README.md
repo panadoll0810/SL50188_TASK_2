@@ -1,5 +1,5 @@
 ## Step_1: preparing simulated mutated genome
-In this step, 300 SNPs and 20 Indels (1 - 10 bases) are generated using script `prep_mutate_genome.py`. 
+In this step, 300 SNPs and 20 Indels (1 - 10 bases) are generated using script `make_mutation_genome.py`. 
 The original input, i.e., reference genome sequence, must be provided as a fasta file. It will be converted into a sequence used to construct the mutated genome.
 
 
