@@ -17,5 +17,8 @@ and the output files and directory are:
 
 The result from merged vcf file is extracted into a csv fils based on the GT (genotype) label in the vcf files. The variants can not be detected by the variant caller are labelled as missing. The final output is checked with tview and IGV.
 
+## Checking low confident variants
+`count_low_confident_variant.py` could be used for checking the variants with low confident by screening them with low QUAL score, fake heterozygous, or mismatched in two variant callers. 
+
 ## Output directory
 The reference genomes, real reads, and the output of code in this section can be found in directory: https://jhub.climb.ac.uk/hub/user-redirect/lab/tree/yanyan/Task_2/part_2
