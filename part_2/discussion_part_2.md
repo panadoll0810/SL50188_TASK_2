@@ -22,7 +22,7 @@ Figure 3. Example in IGV. The blue and red column is the reading position of 212
 
 
 
-By viewing the mapping bam file in the IGV, there are big gaps, i.e, more than 1K bases length, of mapping can be observed (Figure 4). These gaps cannot be deteted by the variant caller, and other tools, such as bedtools.
+By viewing the mapping bam file in the IGV, there are big gaps, i.e, more than 1K bases length, of mapping can be observed (Figure 4). These gaps cannot be deteted by the variant caller, so other tools need to be used, such as bedtools.
 ![figure 4](image/IGV_gap.png)
 Figure 4. Example of gaps found in IGV.
 
